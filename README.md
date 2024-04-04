@@ -29,4 +29,11 @@
 
 ![gradebot picture1](https://github.com/AishatIsFoye/JwksServer2024/assets/127973488/001f6d4a-2591-4b54-8175-889221207b46)
 
+![image](https://github.com/AishatIsFoye/JwksServer2024/assets/127973488/cbcfd4ce-3427-4573-9262-396c49734bc8)
+
+![test 2](https://github.com/AishatIsFoye/JwksServer2024/assets/127973488/f1c396d0-b260-4aea-803d-e9baf47a86f3)
+
+![image](https://github.com/AishatIsFoye/JwksServer2024/assets/127973488/d8fec192-dcdd-42d9-a1f2-3d417058e952)
+
+
 
