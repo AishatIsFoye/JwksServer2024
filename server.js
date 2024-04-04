@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const jwt = require('jsonwebtoken');
 const jose = require('node-jose');
@@ -20,7 +21,23 @@ let expiredToken;
 async function generateKeyPairs() {
   keyPair = await jose.JWK.createKey('RSA', 2048, { alg: 'RS256', use: 'sig' });
   expiredKeyPair = await jose.JWK.createKey('RSA', 2048, { alg: 'RS256', use: 'sig' });
+
+  // Encrypt the private keys before storing them in the database
+  const encryptedKey = encryptPrivateKey(keyPair.toPEM(true));
+  const encryptedExpiredKey = encryptPrivateKey(expiredKeyPair.toPEM(true));
+
+  db.run('INSERT INTO keys (key, exp) VALUES (?, ?)', [encryptedKey, Math.floor(Date.now() / 1000) + 3600]);
+  db.run('INSERT INTO keys (key, exp) VALUES (?, ?)', [encryptedExpiredKey, Math.floor(Date.now() / 1000) - 3600]);
 }
+
+function encryptPrivateKey(privateKey) {
+    const iv = crypto.randomBytes(16); // Initialization vector
+    const key = Buffer.from(process.env.NOT_MY_KEY, 'hex'); // Convert the hex string to a buffer
+    const cipher = crypto.createCipheriv('aes-256-cbc', key, iv);
+    let encrypted = cipher.update(privateKey, 'utf8', 'hex');
+    encrypted += cipher.final('hex');
+    return iv.toString('hex') + encrypted;
+  }
 
 function createTable(){
   db.run(`CREATE TABLE IF NOT EXISTS keys(
